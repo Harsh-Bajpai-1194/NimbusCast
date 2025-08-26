@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Weather App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='static.css') }}">
+</head>
+<body class="default-bg">
+
+  <div class="weather-widget">
+    <div class="search-section">
+      <input type="text" id="cityInput" placeholder="Search city..." required>
+      <button id="searchBtn">🔍</button>
+      <button id="locBtn">📍 Use My Location</button>
+    </div>
+
+    <div id="weatherInfo">
+      <div class="current-weather">
+        <h2 id="cityName">🌍 --</h2>
+        <p id="weatherDesc">--</p>
+        <p id="temp">-- °C</p>
+        <p id="humidity">💧 --%</p>
+        <p id="wind">🌬 -- m/s</p>
+      </div>
+
+      <!-- Forecast Cards -->
+      <div id="forecast" class="forecast-grid"></div>
+
+      <!-- Forecast Chart -->
+      <div class="chart-container" style="margin-top: 20px;">
+        <canvas id="forecastChart"></canvas>
+      </div>
+    </div>
+
+    <div id="result" class="loading"></div>
+  </div>
+
+  <!-- Hidden weather sound -->
+  <audio id="weather-sound" autoplay loop hidden></audio>
+
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart logic (temperature + humidity) -->
+  <script src="{{ url_for('static', filename='chart.js') }}"></script>
+  <!-- Main script (fetching API data & updating DOM) -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
