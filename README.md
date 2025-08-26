@@ -1,7 +1,9 @@
 # 🌦 Weather App  
 
+Link of Repository clone 👇
+
 ```yaml
-Link of Repository clone 👉 "https://github.com/Harsh-Bajpai-1194/NimbusCast.git"
+https://github.com/Harsh-Bajpai-1194/NimbusCast.git
 ```
 
 A simple weather application built with **Flask (Python backend)** + **HTML, CSS, JavaScript frontend**.  
