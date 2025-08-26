@@ -1,5 +1,9 @@
 # 🌦 Weather App  
 
+```yaml
+Link of Repository clone 👉 "https://github.com/Harsh-Bajpai-1194/NimbusCast.git"
+```
+
 A simple weather application built with **Flask (Python backend)** + **HTML, CSS, JavaScript frontend**.  
 It uses the **OpenWeather API** to fetch real-time weather and forecast data, and **Chart.js** to visualize temperature trends.  
 
