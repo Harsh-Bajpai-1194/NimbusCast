@@ -1,4 +1,4 @@
-# 🌦 Weather App  
+# 🌦 NimbusCast  
 
 Link of Repository clone 👇
 
@@ -88,3 +88,4 @@ The forecast includes a **line chart** showing temperature variations over the n
 ---
 
 ✅ Ready to use! Just plug in your API key and start exploring weather data.  
+
