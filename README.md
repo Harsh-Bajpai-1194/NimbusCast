@@ -1,12 +1,20 @@
 # 🌦 NimbusCast  
 
+Creator - HARSH BAJPAI  
+Collaborators👇  
+1️⃣
+2️⃣
+3️⃣
+4️⃣
+5️⃣
+
 Link of Repository clone 👇
 
 ```yaml
 https://github.com/Harsh-Bajpai-1194/NimbusCast.git
 ```
 
-A simple weather application built with **Flask (Python backend)** + **HTML, CSS, JavaScript frontend**.  
+NimbusCast is a simple weather application built with **Flask (Python backend)** + **HTML, CSS, JavaScript frontend**.  
 It uses the **OpenWeather API** to fetch real-time weather and forecast data, and **Chart.js** to visualize temperature trends.  
 
 ## API Data
@@ -88,4 +96,3 @@ The forecast includes a **line chart** showing temperature variations over the n
 ---
 
 ✅ Ready to use! Just plug in your API key and start exploring weather data.  
-
