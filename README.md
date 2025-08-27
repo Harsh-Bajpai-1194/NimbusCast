@@ -3,7 +3,7 @@
 Created on 26-08-2025  
 Author - HARSH BAJPAI  
 Collaborators👇  
-1️⃣  
+1️⃣  Hani Dwivedi 
 2️⃣  
 3️⃣  
 4️⃣  
@@ -97,3 +97,4 @@ The forecast includes a **line chart** showing temperature variations over the n
 ---
 
 ✅ Ready to use! Just plug in your API key and start exploring weather data.  
+
