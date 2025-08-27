@@ -1,5 +1,5 @@
 This is a sample of OpenWeatherMap API data👇
-
+ 
 {
   "cod": "200",
   "message": 0,
@@ -1540,4 +1540,5 @@ This is a sample of OpenWeatherMap API data👇
     "sunrise": 1755821643,
     "sunset": 1755868165
   }
+
 }
