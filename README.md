@@ -1,6 +1,7 @@
 # 🌦 NimbusCast  
 
-Creator - HARSH BAJPAI  
+Created on 26-08-2025  
+Author - HARSH BAJPAI  
 Collaborators👇  
 1️⃣  
 2️⃣  
