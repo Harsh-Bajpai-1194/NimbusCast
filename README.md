@@ -83,19 +83,32 @@ The forecast includes a **line chart** showing temperature variations over the n
 
 ```yaml
 
-📦 weather-app
+📦 NimbusCast
  ┣ 📂 static
- ┃ ┣ 📜 static.css      # Styles  
- ┃ ┣ 📜 script.js       # Frontend logic + API calls  
- ┃ ┣ 📜 chart.js        # Chart.js setup  
+ ┃ ┣ 📜 static.css       # Styles  
+ ┃ ┣ 📜 script.js        # Frontend logic + API calls  
+ ┃ ┣ 📜 chart.js         # Chart.js setup  
+ ┃ ┣ 📜 react.js         # React script (if used)  
+ ┃ ┣ 📜 settings.json    # App settings  
+ ┃ ┗ 📂 sounds
+ ┃   ┣ 📜 clear.mp3  
+ ┃   ┣ 📜 cloud.mp3  
+ ┃   ┣ 📜 default.mp3  
+ ┃   ┣ 📜 mist.mp3  
+ ┃   ┣ 📜 rain.mp3  
+ ┃   ┣ 📜 snow.mp3  
+ ┃   ┗ 📜 thunder.mp3  
  ┣ 📂 templates
- ┃ ┗ 📜 index.html      # Main UI  
- ┣ 📜 app.py            # Flask backend  
- ┣ 📜 README.md         # Documentation  
+ ┃ ┗ 📜 index.html       # Main UI  
+ ┣ 📂 images
+ ┃ ┗ 📜 nimbus.jpg       # App logo/banner  
+ ┣ 📜 app.py             # Flask backend  
+ ┣ 📜 requirements.txt   # Python dependencies  
+ ┣ 📜 API_data.txt       # Sample API response  
+ ┣ 📜 README.md          # Documentation  
+ ┗ 📂 .git               # Git repo data (if cloned)  
 ```
 
 ---
 
-✅ Ready to use! Just plug in your API key and start exploring weather data.  
-
-
+✅ Ready to use! Just plug in your API key and start exploring weather data.
