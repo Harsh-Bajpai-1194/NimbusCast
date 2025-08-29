@@ -158,6 +158,20 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
   }
 });
 
+// ✅ Enter key = Search button
+// ✅ CTRL+Enter = Location button
+document.getElementById("cityInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.ctrlKey) {
+    e.preventDefault(); // stop accidental form submit
+    document.getElementById("searchBtn").click();
+  }
+  if (e.key === "Enter" && e.ctrlKey) {
+    e.preventDefault();
+    document.getElementById("locBtn").click();
+  }
+});
+
+
 // ---- Location Button ----
 document.getElementById("locBtn").addEventListener("click", () => {
   const resultDiv = document.getElementById("result");
