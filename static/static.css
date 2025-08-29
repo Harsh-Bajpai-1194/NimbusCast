@@ -7,8 +7,8 @@ body {
   display: flex;
   align-items: flex-start;   /* keep content at top */
   justify-content: center;
-  overflow-y: auto;          /* allow vertical scroll */
-  overflow-x: hidden;        /* block horizontal scroll */
+  overflow-y: scroll;          /* allow vertical scroll */
+  overflow-x: scroll;        /* allow horizontal scroll */
   position: relative;
   transition: background 1s ease;
 }
