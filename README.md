@@ -4,7 +4,7 @@ Created on 26-08-2025
 Author - HARSH BAJPAI  
 Collaborators👇  
 1️⃣Hani Dwivedi  
-2️⃣  
+2️⃣  Harsh Tripathi
 3️⃣  
 4️⃣  
 5️⃣  
@@ -112,3 +112,4 @@ The forecast includes a **line chart** showing temperature variations over the n
 ---
 
 ✅ Ready to use! Just plug in your API key and start exploring weather data.
+
