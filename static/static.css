@@ -85,6 +85,46 @@ body {
   display: block;
   opacity: 1;
 }
+
+.quiz {
+  background: linear-gradient(135deg, #ff4e50, #f9d423); /* gradient background */
+  height: 120px;
+  width: 120px;
+  z-index: 30;
+  position: absolute;
+  top: 30%;
+  left: 8%;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+/* On hover */
+.quiz:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #43cea2, #185a9d); /* greenish-blue */
+  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+}
+
+/* On click/active */
+.quiz:active {
+  transform: scale(0.95);
+  background: linear-gradient(135deg, #00b09b, #96c93d); /* green shade */
+}
+
+
+
+
+
+
 /* Weather Widget Container */
 .weather-widget {
   background: rgba(255, 255, 255, 0.15);
