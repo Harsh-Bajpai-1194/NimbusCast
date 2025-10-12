@@ -5,9 +5,9 @@ Author - HARSH BAJPAI
 Collaborators👇  
 1️⃣Hani Dwivedi  
 2️⃣Harsh Tripathi  
-3️⃣  
-4️⃣  
-5️⃣  
+3️⃣Harsh Vardhan Singh
+4️⃣Harsh Katiyar
+5️⃣Hani Dwivedi
 
 Link of Repository clone 👇
 
@@ -112,5 +112,6 @@ The forecast includes a **line chart** showing temperature variations over the n
 ---
 
 ✅ Ready to use! Just plug in your API key and start exploring weather data.
+
 
 
