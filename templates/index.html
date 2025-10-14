@@ -3,34 +3,71 @@
 <head> 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Weather App</title>
+  <title>NimbusCast</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='static.css') }}">
+  <style>
+    /* Basic styles for the header elements */
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+      margin-bottom: 15px;
+    }
+    .welcome-header {
+      margin: 0;
+      font-size: 1.2em;
+      color: #333;
+    }
+    .signout-button {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background-color: #e6e6e6;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .signout-button:hover {
+      background-color: #dcdcdc;
+    }
+  </style>
 </head>
-<body class="default-bg">
- <div class="quiz" onclick="window.location.href='quiz.html'">QUIZ</div>
+
+<body>
+  <div id="quiz-box" class="quiz" onclick="window.location.href='/quiz'"></div>
 
   <div class="weather-widget">
+    
+    <div class="header-section">
+        <h2 id="welcome-message" class="welcome-header">Welcome!</h2>
+        <button id="signout-btn" class="signout-button">Sign Out</button>
+    </div>
+
     <div class="search-section">
       <input type="text" id="cityInput" placeholder="Search city..." required>
       <button id="searchBtn">🔍</button>
       <button id="locBtn">📍 Use My Location</button>
     </div>
 
+    <div class="view-cities-btn" onclick="window.location.href='/cities'">🏙️</div>
+
     <div id="weatherInfo">
-      <div class="current-weather">
-        <h2 id="cityName">🌍 --</h2>
-        <p id="weatherDesc">--</p>
-        <p id="temp">-- °C</p>
-        <p id="humidity">💧 --%</p>
-        <p id="AQI">--</p>
-        <p id="wind">🌬 -- m/s</p>
+      <div class="weather-info">
+        <div class="weather-box weather-city" id="cityName">🌍 --</div>
+        <div class="weather-box weather-temp" id="temp">🌡️ -- °C</div>
+        <div class="weather-box weather-humidity" id="humidity">💧 --%</div>
+        <div class="weather-box weather-wind" id="wind">🌬 -- m/s</div>
+        <div class="weather-box weather-aqi" id="aqiBox">🌫 AQI: --</div>
       </div>
 
-      <!-- Forecast Cards -->
+      <div class="current-weather">
+        <p id="weatherDesc">--</p>
+        <p id="aqiDetails">--</p>
+      </div>
+
       <div id="forecast" class="forecast-grid"></div>
 
-      <!-- Forecast Chart -->
       <div class="chart-container" style="margin-top: 20px;">
         <canvas id="forecastChart"></canvas>
       </div>
@@ -39,15 +76,38 @@
     <div id="result" class="loading"></div>
   </div>
 
-  <!-- Hidden weather sound -->
   <audio id="weather-sound" autoplay loop hidden></audio>
 
-  <!-- Chart.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Chart logic (temperature + humidity) -->
+  
+  <script>
+    // Ensures the script runs after the page content is fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- 1. Check if the user is logged in ---
+      const userString = localStorage.getItem('user');
+      if (!userString) {
+        // If no user data, redirect to the login page
+        window.location.href = '/login';
+        return; // Stop further execution
+      }
+
+      // --- 2. Personalize the welcome message ---
+      const user = JSON.parse(userString);
+      const firstName = user.name.split(' ')[0]; 
+      document.getElementById('welcome-message').textContent = `Welcome, ${firstName}!`;
+
+      // --- 3. Set up the sign-out button ---
+      const signoutBtn = document.getElementById('signout-btn');
+      if (signoutBtn) {
+        signoutBtn.addEventListener('click', () => {
+          localStorage.removeItem('user'); // Clear user data
+          window.location.href = '/login'; // Redirect
+        });
+      }
+    });
+  </script>
+
   <script src="{{ url_for('static', filename='chart.js') }}"></script>
-  <!-- Main script (fetching API data & updating DOM) -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
- 

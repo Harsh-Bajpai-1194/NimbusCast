@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Searched Cities - NimbusCast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='static.css') }}">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0b132b;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 30px;
+    }
+
+    h1 { color: #00aaff; }
+
+    .city-list {
+      background: #1c2541;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+      width: 350px;
+      margin-top: 20px;
+    }
+
+    .city-item {
+      padding: 10px;
+      border-bottom: 1px solid #3a506b;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .city-item:hover {
+      background: #3a506b;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      color: #00aaff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏙️ Searched Cities</h1>
+
+  <div class="city-list" id="cityList">Loading...</div>
+
+  <a href="/" class="back-link">← Back to Home</a>
+
+  <script>
+    async function loadCities() {
+      const res = await fetch("/searched-cities");
+      const data = await res.json();
+      const list = document.getElementById("cityList");
+      list.innerHTML = "";
+
+      if (data.error) {
+        list.innerHTML = `<p>Error: ${data.error}</p>`;
+        return;
+      }
+
+      if (!data.searched_cities || data.searched_cities.length === 0) {
+        list.innerHTML = "<p>No searched cities yet.</p>";
+        return;
+      }
+
+      data.searched_cities.forEach(city => {
+        const div = document.createElement("div");
+        div.className = "city-item";
+        div.textContent = city;
+        div.onclick = () => {
+          // redirect to main page with city pre-filled
+          window.location.href = `/?city=${encodeURIComponent(city)}`;
+        };
+        list.appendChild(div);
+      });
+    }
+
+    loadCities();
+  </script>
+</body>
+</html>

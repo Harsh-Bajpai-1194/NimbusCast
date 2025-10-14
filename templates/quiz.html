@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather Quiz</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121939;
+      --text: #e9efff;
+      --muted: #b6c2ff;
+      --accent: #6aa9ff;
+      --accent-2: #70e1b5;
+      --danger: #ff6b6b;
+      --warning: #ffd166;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 80% -10%, #1a2358, transparent 60%),
+                  radial-gradient(900px 600px at 0% 100%, #0f153b, transparent 60%),
+                  var(--bg);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: min(100%, 950px);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,0));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    header .title {
+      font-size: 18px; font-weight: 700; letter-spacing: .4px;
+    }
+    header .pill {
+      margin-left: auto;
+      font-size: 12px;
+      color: #0a142a;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .content { padding: 24px; }
+
+    .card {
+      background: color-mix(in oklab, var(--card) 85%, black 15%);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .row { display: grid; gap: 16px; }
+
+    .start {
+      display: grid; gap: 16px;
+      text-align: center;
+    }
+    .start h1 { margin: 0 0 6px; font-size: 28px; }
+    .start p { margin: 0; color: var(--muted); }
+
+    .input {
+      display: grid; gap: 8px; text-align: left; margin: 12px auto 0; width: min(520px, 100%);
+    }
+    .input label { font-size: 14px; color: var(--muted); }
+    .input input {
+      width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.04); color: var(--text);
+    }
+
+    .btn {
+      appearance: none; border: 0; cursor: pointer; color: #08142e; font-weight: 800; letter-spacing: .3px;
+      padding: 12px 16px; border-radius: 12px; transition: transform .05s ease, filter .15s ease; font-size: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+    .btn:active { transform: translateY(1px) scale(.99); }
+    .btn.secondary { color: var(--text); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); font-weight: 600; }
+    .btn.full { width: 100%; }
+
+    .meta {
+      display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; margin-bottom: 14px;
+    }
+    .progress {
+      height: 10px; background: rgba(255,255,255,.06); border-radius: 999px; overflow: hidden;
+    }
+    .bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+
+    .chip { font-size: 12px; color: var(--muted); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); padding: 6px 10px; border-radius: 999px; }
+
+    .question {
+      font-size: 20px; margin: 6px 0 16px; font-weight: 700;
+    }
+
+    .options { display: grid; gap: 10px; }
+    .option {
+      width: 100%; text-align: left; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04); color: var(--text); cursor: pointer; position: relative;
+    }
+    .option[disabled] { opacity: .7; cursor: not-allowed; }
+    .option.correct { outline: 2px solid #2bd67b; background: rgba(43,214,123,.09); }
+    .option.wrong   { outline: 2px solid var(--danger); background: rgba(255,107,107,.09); }
+
+    .explain { margin-top: 10px; color: var(--muted); font-size: 14px; }
+
+    .footer {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px;
+    }
+
+    .score {
+      display: grid; gap: 12px; text-align: center;
+    }
+    .score h2 { margin: 8px 0 0; font-size: 26px; }
+
+    .grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 10px;
+    }
+
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; padding: 2px 6px; border-radius: 6px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); }
+
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Weather quiz app">
+    <header>
+      <div class="title">🌤️ Weather Quiz</div>
+      <div id="bestBadge" class="pill" hidden>Best: 0 / 10</div>
+    </header>
+    <div class="content">
+
+      <!-- Start Screen -->
+      <section id="screenStart" class="card start" aria-labelledby="start-heading">
+        <h1 id="start-heading">Test your weather basics</h1>
+        <p>10 quick questions. Learn a fact with every answer.</p>
+
+        <div class="input">
+          <label for="player">Name (optional)</label>
+          <input id="player" type="text" placeholder="e.g., Harsh" inputmode="text" autocomplete="name" />
+        </div>
+
+        <div class="grid">
+          <button id="btnStart" class="btn">Start quiz</button>
+          <button id="btnHow" class="btn secondary" aria-expanded="false" aria-controls="howto">How it works</button>
+        </div>
+
+        <div id="howto" class="card" style="display:none">
+          <ul>
+            <li>There are 10 questions, selected at random each run.</li>
+            <li>One correct answer per question. You get instant feedback and an explanation.</li>
+            <li>You have <strong>20 seconds</strong> per question. Skip with <span class="kbd">N</span> or Next.</li>
+            <li>Keyboard: pick options with <span class="kbd">1–4</span>, Next with <span class="kbd">N</span>, Restart with <span class="kbd">R</span>.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Quiz Screen -->
+      <section id="screenQuiz" class="card" hidden>
+        <div class="meta" aria-live="polite">
+          <div class="progress" aria-label="Progress"><div id="bar" class="bar"></div></div>
+          <span id="counter" class="chip">Q 1 / 10</span>
+          <span id="timer" class="chip" aria-label="Seconds left">20s</span>
+        </div>
+
+        <div id="qText" class="question">Question text</div>
+        <div id="options" class="options" role="group" aria-label="Answer choices"></div>
+
+        <div id="explain" class="explain" aria-live="polite"></div>
+
+        <div class="footer">
+          <button id="btnNext" class="btn" disabled>Next</button>
+          <button id="btnQuit" class="btn secondary">Quit</button>
+        </div>
+      </section>
+
+      <!-- Score Screen -->
+      <section id="screenScore" class="card score" hidden>
+        <div style="font-size:56px">🎉</div>
+        <h2 id="scoreTitle">Nice run!</h2>
+        <p id="scoreLine">You scored 7 / 10</p>
+        <div class="grid">
+          <button id="btnRestart" class="btn full">Play again</button>
+          <button id="btnShare" class="btn secondary full">Share result</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    // ---- Question bank ----
+    const QUESTION_BANK = [
+      {
+        q: "What does a falling barometer usually indicate?",
+        options: ["Improving weather", "Colder temperatures", "Worsening weather / lower pressure", "Stronger UV index"],
+        answer: 2,
+        why: "A falling barometer means air pressure is dropping, often ahead of clouds, wind, and precipitation."
+      },
+      {
+        q: "Which cloud type is most associated with thunderstorms?",
+        options: ["Cirrus", "Stratus", "Cumulonimbus", "Altocumulus"],
+        answer: 2,
+        why: "Towering cumulonimbus clouds produce heavy rain, lightning, hail, and sometimes tornadoes."
+      },
+      {
+        q: "Dew point best describes…",
+        options: ["The temperature feels like", "The temp where air becomes saturated", "The temp inside clouds", "Daily temperature range"],
+        answer: 1,
+        why: "When air cools to the dew point, it reaches 100% relative humidity and condensation begins."
+      },
+      {
+        q: "Air that is 30°C with 80% relative humidity will feel…",
+        options: ["Cooler than 30°C", "About the same", "Hotter/Stickier than 30°C", "Impossible to tell"],
+        answer: 2,
+        why: "High humidity slows sweat evaporation, raising the heat index and making it feel hotter."
+      },
+      {
+        q: "What does the UV index measure?",
+        options: ["Infrared heat", "Ultraviolet radiation strength", "Air pollution level", "Brightness of sunlight"],
+        answer: 1,
+        why: "UV index estimates the risk from ultraviolet radiation that can cause sunburn and skin damage."
+      },
+      {
+        q: "Which side of a mountain is typically drier due to the rain-shadow effect?",
+        options: ["Windward side", "Leeward side", "Both equally", "Summit only"],
+        answer: 1,
+        why: "Moist air rises and drops rain on the windward side; descending air warms and dries on the leeward side."
+      },
+      {
+        q: "During a sea breeze (daytime at the coast), surface wind blows…",
+        options: ["Land → Sea", "Sea → Land", "Parallel to the coast", "Straight upward"],
+        answer: 1,
+        why: "Land heats faster than water, so cooler marine air flows inland toward lower pressure over the land."
+      },
+      {
+        q: "A red sky at sunset often suggests…",
+        options: ["Rain overnight is certain", "Clear dry air to the west", "Fog is forming", "A cyclone is overhead"],
+        answer: 1,
+        why: "Red sunsets imply sunlight scattering through dry, dust-laden air to the west, often fair weather following."
+      },
+      {
+        q: "Which instrument measures wind speed?",
+        options: ["Hygrometer", "Anemometer", "Barograph", "Pyranometer"],
+        answer: 1,
+        why: "An anemometer measures wind speed."
+      },
+      {
+        q: "What scale rates tropical cyclone intensity in the North Indian Ocean advisories?",
+        options: ["Saffir–Simpson only", "Beaufort scale", "IMD cyclone categories (DD, CS, SCS, VSCS, ESCS)", "TorVergata index"],
+        answer: 2,
+        why: "The India Meteorological Department uses categories like Deep Depression, Cyclonic Storm, Severe Cyclonic Storm, etc."
+      },
+      {
+        q: "Why are deserts often very hot during the day and cold at night?",
+        options: ["High rainfall", "Low cloud cover and low humidity", "Thick vegetation", "High altitude only"],
+        answer: 1,
+        why: "Dry, clear air allows strong daytime heating and rapid nighttime cooling due to radiative loss."
+      },
+      {
+        q: "AQI of 180 is typically labeled as…",
+        options: ["Good", "Moderate", "Unhealthy", "Hazardous"],
+        answer: 2,
+        why: "Most AQI systems label 151–200 as Unhealthy for all or for sensitive groups depending on the standard."
+      },
+      {
+        q: "Fog forms when…",
+        options: ["Wind speed is high", "Air cools to its dew point near the ground", "It rains heavily", "Pressure rises quickly"],
+        answer: 1,
+        why: "Near-surface air reaches saturation, causing condensation into tiny droplets suspended as fog."
+      },
+      {
+        q: "Which gas is most responsible for the greenhouse effect in normal conditions?",
+        options: ["Carbon dioxide", "Water vapour", "Methane", "Ozone"],
+        answer: 1,
+        why: "Water vapour is the dominant greenhouse gas by effect, though CO₂ drives long-term change."
+      },
+      {
+        q: "Lightning safety: the best action outdoors with no shelter is to…",
+        options: ["Lie flat on the ground", "Stand under a lone tree", "Crouch low on the balls of your feet", "Keep running"],
+        answer: 2,
+        why: "Minimize contact with the ground; avoid tall isolated objects. Shelter in a building or car if possible."
+      },
+      {
+        q: "What does a yellow weather warning generally mean?",
+        options: ["No risk", "Be aware: possible impacts", "Severe danger is certain", "Event has ended"],
+        answer: 1,
+        why: "Yellow typically signals to stay aware; impacts are possible and you should plan accordingly."
+      }
+    ];
+
+    // ---- State ----
+    const TOTAL_QUESTIONS = 10;
+    const TIME_PER_Q = 20; // seconds
+
+    let quiz = [];
+    let i = 0; // current index
+    let score = 0;
+    let timer = null;
+    let timeLeft = TIME_PER_Q;
+    let locked = false;
+
+    // ---- Elements ----
+    const $ = sel => document.querySelector(sel);
+    const els = {
+      bestBadge: $('#bestBadge'),
+      screenStart: $('#screenStart'),
+      screenQuiz: $('#screenQuiz'),
+      screenScore: $('#screenScore'),
+      how: $('#howto'),
+      btnHow: $('#btnHow'),
+      player: $('#player'),
+      btnStart: $('#btnStart'),
+      qText: $('#qText'),
+      options: $('#options'),
+      explain: $('#explain'),
+      counter: $('#counter'),
+      bar: $('#bar'),
+      timer: $('#timer'),
+      btnNext: $('#btnNext'),
+      btnQuit: $('#btnQuit'),
+      scoreTitle: $('#scoreTitle'),
+      scoreLine: $('#scoreLine'),
+      btnRestart: $('#btnRestart'),
+      btnShare: $('#btnShare'),
+    };
+
+    // Load best score
+    const best = Number(localStorage.getItem('weather-quiz-best') || 0);
+    if (!Number.isNaN(best) && best > 0) {
+      els.bestBadge.textContent = `Best: ${best} / ${TOTAL_QUESTIONS}`;
+      els.bestBadge.hidden = false;
+    }
+
+    // ---- Event wiring ----
+    els.btnHow.addEventListener('click', () => {
+      const open = els.how.style.display !== 'none';
+      els.how.style.display = open ? 'none' : 'block';
+      els.btnHow.setAttribute('aria-expanded', String(!open));
+    });
+
+    els.btnStart.addEventListener('click', start);
+    els.btnNext.addEventListener('click', next);
+    els.btnQuit.addEventListener('click', showStart);
+    els.btnRestart.addEventListener('click', start);
+    els.btnShare.addEventListener('click', share);
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (els.screenQuiz.hidden) return;
+      if (e.key >= '1' && e.key <= '4') {
+        const idx = Number(e.key) - 1;
+        const btn = els.options.querySelectorAll('button')[idx];
+        if (btn) btn.click();
+      } else if (e.key.toLowerCase() === 'n') {
+        els.btnNext.click();
+      } else if (e.key.toLowerCase() === 'r' && els.screenScore.hidden === false) {
+        start();
+      }
+    });
+
+    // ---- Core ----
+    function start() {
+      // Build a fresh quiz: shuffle and take N
+      quiz = shuffle([...QUESTION_BANK]).slice(0, TOTAL_QUESTIONS);
+      i = 0; score = 0; locked = false;
+      els.screenStart.hidden = true;
+      els.screenScore.hidden = true;
+      els.screenQuiz.hidden = false;
+      render();
+      startTimer();
+    }
+
+    function showStart() {
+      clearInterval(timer);
+      els.screenQuiz.hidden = true;
+      els.screenScore.hidden = true;
+      els.screenStart.hidden = false;
+      els.btnNext.disabled = true;
+      els.explain.textContent = '';
+      els.options.innerHTML = '';
+    }
+
+    function render() {
+      const total = quiz.length;
+      els.counter.textContent = `Q ${i+1} / ${total}`;
+      els.bar.style.width = `${((i)/total)*100}%`;
+      const item = quiz[i];
+      els.qText.textContent = item.q;
+      els.options.innerHTML = '';
+      els.explain.textContent = '';
+      els.btnNext.disabled = true;
+      locked = false;
+
+      // Build options
+      item.options.forEach((text, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.innerHTML = `<span class="kbd">${idx+1}</span> ${escapeHtml(text)}`;
+        btn.setAttribute('aria-label', `Option ${idx+1}: ${text}`);
+        btn.addEventListener('click', () => pick(idx));
+        els.options.appendChild(btn);
+      });
+
+      // Reset timer
+      resetTimer();
+    }
+
+    function pick(idx) {
+      if (locked) return;
+      locked = true;
+      clearInterval(timer);
+      const item = quiz[i];
+      const buttons = [...els.options.querySelectorAll('button')];
+      const correctIdx = item.answer;
+
+      buttons.forEach((b, j) => {
+        b.disabled = true;
+        if (j === correctIdx) b.classList.add('correct');
+      });
+      if (idx !== correctIdx) {
+        buttons[idx]?.classList.add('wrong');
+      } else {
+        score++;
+      }
+
+      els.explain.textContent = item.why;
+      els.btnNext.disabled = false;
+      els.bar.style.width = `${((i+1)/quiz.length)*100}%`;
+    }
+
+    function next() {
+      if (i < quiz.length - 1) {
+        i++;
+        render();
+      } else {
+        finish();
+      }
+    }
+
+    function finish() {
+      clearInterval(timer);
+      els.screenQuiz.hidden = true;
+      els.screenScore.hidden = false;
+      const name = els.player.value.trim();
+      const line = name ? `${name}, you scored ${score} / ${quiz.length}` : `You scored ${score} / ${quiz.length}`;
+      els.scoreLine.textContent = line;
+      els.scoreTitle.textContent = score >= 8 ? 'Excellent!' : score >= 5 ? 'Nice run!' : 'Good effort!';
+
+      // Save best
+      const prev = Number(localStorage.getItem('weather-quiz-best') || 0);
+      const best = Math.max(prev, score);
+      localStorage.setItem('weather-quiz-best', String(best));
+      els.bestBadge.textContent = `Best: ${best} / ${TOTAL_QUESTIONS}`;
+      els.bestBadge.hidden = false;
+    }
+
+    function share() {
+      const text = `I just scored ${score}/${quiz.length} on this Weather Quiz!`;
+      const url = location.href;
+      if (navigator.share) {
+        navigator.share({ title: 'Weather Quiz', text, url }).catch(()=>{});
+      } else {
+        navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+          alert('Result copied to clipboard!');
+        });
+      }
+    }
+
+    // ---- Timer ----
+    function startTimer() {
+      timeLeft = TIME_PER_Q;
+      els.timer.textContent = `${timeLeft}s`;
+      clearInterval(timer);
+      timer = setInterval(() => {
+        timeLeft--;
+        els.timer.textContent = `${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          // Auto reveal and move on
+          pick(-1);
+        }
+      }, 1000);
+    }
+    function resetTimer() { clearInterval(timer); startTimer(); }
+
+    // ---- Utils ----
+    function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+    function escapeHtml(str) { return str.replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s])); }
+  </script>
+</body>
+</html>
