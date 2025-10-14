@@ -65,6 +65,33 @@ function updateBackground(weather) {
   playWeatherSound(weather);
 }
 
+function updateAQIBox(aqiData) {
+  const aqiBox = document.getElementById("aqiBox");
+  const aqiDetails = document.getElementById("aqiDetails");
+
+  aqiBox.classList.remove("good", "moderate", "unhealthy", "hazardous");
+
+  if (!aqiData || aqiData.error || !aqiData.aqi_us) {
+    aqiBox.textContent = "🌫 AQI: --";
+    aqiDetails.textContent = "Air Quality data unavailable";
+    return;
+  }
+
+  const aqi = aqiData.aqi_us;
+  aqiBox.textContent = `🌫 AQI: ${aqi}`;
+  aqiDetails.textContent = `Main Pollutant: ${aqiData.main_pollutant || "N/A"}`;
+
+  if (aqi <= 50) {
+    aqiBox.classList.add("good");
+  } else if (aqi <= 100) {
+    aqiBox.classList.add("moderate");
+  } else if (aqi <= 200) {
+    aqiBox.classList.add("unhealthy");
+  } else {
+    aqiBox.classList.add("hazardous");
+  }
+}
+
 // ✅ Universal Country Code → Flag Emoji
 function countryCodeToFlag(code) {
   return code
@@ -72,6 +99,7 @@ function countryCodeToFlag(code) {
     .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt()));
 }
 
+// ---- API Calls ----
 async function fetchWeather(city) {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
   const res = await fetch(url);
@@ -82,6 +110,19 @@ async function fetchForecast(city) {
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
   const res = await fetch(url);
   return await res.json();
+}
+
+async function fetchAQI(city, state, country) {
+  try {
+    const res = await fetch("/aqi/city", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ city, state, country })
+    });
+    return await res.json();
+  } catch {
+    return { error: "AQI fetch failed" };
+  }
 }
 
 function renderForecastChart(data) {
@@ -122,6 +163,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
       return;
     }
 
+    const aqiData = await fetchAQI(weatherData.name, weatherData.name, weatherData.sys.country);
     const flag = countryCodeToFlag(weatherData.sys.country);
 
     document.getElementById("cityName").innerHTML =
@@ -131,6 +173,8 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
     document.getElementById("temp").innerText = `🌡 ${weatherData.main.temp.toFixed(1)}°C`;
     document.getElementById("humidity").innerText = `💧 Humidity: ${weatherData.main.humidity}%`;
     document.getElementById("wind").innerText = `🌬 Wind: ${weatherData.wind.speed} m/s`;
+
+    updateAQIBox(aqiData);
 
     const forecastDiv = document.getElementById("forecast");
     forecastDiv.innerHTML = "";
@@ -162,7 +206,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
 // ✅ CTRL+Enter = Location button
 document.getElementById("cityInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter" && !e.ctrlKey) {
-    e.preventDefault(); // stop accidental form submit
+    e.preventDefault();
     document.getElementById("searchBtn").click();
   }
   if (e.key === "Enter" && e.ctrlKey) {
@@ -170,7 +214,6 @@ document.getElementById("cityInput").addEventListener("keydown", (e) => {
     document.getElementById("locBtn").click();
   }
 });
-
 
 // ---- Location Button ----
 document.getElementById("locBtn").addEventListener("click", () => {
@@ -196,7 +239,8 @@ document.getElementById("locBtn").addEventListener("click", () => {
         return;
       }
 
-      // ✅ Fix: Rename Nawabganj → Kanpur (geo correction)
+      const aqiData = await fetchAQI(weatherData.name, weatherData.name, weatherData.sys.country);
+
       let cityName = weatherData.name;
       if (latitude >= 26.3 && latitude <= 26.6 && longitude >= 80.2 && longitude <= 80.5) {
         cityName = "Kanpur";
@@ -211,6 +255,8 @@ document.getElementById("locBtn").addEventListener("click", () => {
       document.getElementById("temp").innerText = `🌡 ${weatherData.main.temp.toFixed(1)}°C`;
       document.getElementById("humidity").innerText = `💧 Humidity: ${weatherData.main.humidity}%`;
       document.getElementById("wind").innerText = `🌬 Wind: ${weatherData.wind.speed} m/s`;
+
+      updateAQIBox(aqiData);
 
       const forecastDiv = document.getElementById("forecast");
       forecastDiv.innerHTML = "";

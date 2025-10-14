@@ -7,7 +7,7 @@ body {
   display: flex;
   align-items: flex-start;   /* keep content at top */
   justify-content: center;
-  overflow-y: scroll;          /* allow vertical scroll */
+  overflow-y: scroll;        /* allow vertical scroll */
   overflow-x: scroll;        /* allow horizontal scroll */
   position: relative;
   transition: background 1s ease;
@@ -15,7 +15,6 @@ body {
  
 /* Splash screen full center */
 .splash {
-  
   position: relative;
   top: 200;
   left: 0;
@@ -54,17 +53,11 @@ body {
   }
 }
 
-
-
 .splash h1 {
   font-size: 1.8rem;
   color: white;
   margin: 0;
 }
-
-
-  
-
 
 .splash.fade-out {
   opacity: 0;
@@ -87,13 +80,17 @@ body {
 }
 
 .quiz {
-  background: linear-gradient(135deg, #ff4e50, #f9d423); /* gradient background */
-  height: 120px;
-  width: 120px;
+  background-image: url('images/quiz1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+
+  height: 110px;
+  width: 110px;
   z-index: 30;
   position: absolute;
-  top: 30%;
-  left: 8%;
+  top: 15%;
+  left: 75%;
   border: 3px solid #fff;
   border-radius: 50%;
   color: white;
@@ -110,41 +107,101 @@ body {
 /* On hover */
 .quiz:hover {
   transform: scale(1.1);
-  background: linear-gradient(135deg, #43cea2, #185a9d); /* greenish-blue */
   box-shadow: 0 12px 25px rgba(0,0,0,0.3);
 }
 
 /* On click/active */
 .quiz:active {
   transform: scale(0.95);
-  background: linear-gradient(135deg, #00b09b, #96c93d); /* green shade */
+  background: linear-gradient(135deg, #00b09b, #96c93d);
 }
-
-
-
-
-
 
 /* Weather Widget Container */
 .weather-widget {
   background: rgba(255, 255, 255, 0.15);
   -webkit-backdrop-filter: blur(10px); /* Safari */
-  backdrop-filter: blur(10px);         /* Other modern browsers */
+  backdrop-filter: blur(10px);
   padding: 25px;
   border-radius: 20px;
-  width: 700px;
-  max-width: 95%;              /* responsive on small screens */
+  width: 1200px;
+  max-width: 95%;
   text-align: center;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   color: #141414;
-  margin: 20px 0;              /* spacing so it's not stuck at top */
+  margin: 20px 0;
+}
+
+/* === Weather Info Boxes === */
+.weather-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.weather-box {
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  min-width: 140px;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.weather-box:hover {
+  transform: scale(1.05);
+}
+
+/* City Name */
+.weather-city {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+}
+
+/* Temperature */
+.weather-temp {
+  background: linear-gradient(135deg, #ff512f, #dd2476);
+}
+
+/* Humidity */
+.weather-humidity {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+}
+
+/* Wind Speed */
+.weather-wind {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+
+/* AQI Box (default) */
+.weather-aqi {
+  background: linear-gradient(135deg, #636363, #a2ab58); /* gray-yellow fallback */
+}
+
+/* AQI Levels */
+.weather-aqi.good {
+  background: linear-gradient(135deg, #00b09b, #96c93d); /* Green */
+}
+
+.weather-aqi.moderate {
+  background: linear-gradient(135deg, #f7971e, #ffd200); /* Yellow */
+}
+
+.weather-aqi.unhealthy {
+  background: linear-gradient(135deg, #ff512f, #dd2476); /* Red-Pink */
+}
+
+.weather-aqi.hazardous {
+  background: linear-gradient(135deg, #7b4397, #dc2430); /* Purple-Red */
 }
 
 /* === Splash Screen Image === */
 .nimbus img {
-  width: 150px;          /* default size */
+  width: 150px;
   max-width: 40vw;  
-     /* never take more than 40% of screen width */
   height: auto;
   border-radius: 50%;
 }
@@ -152,16 +209,16 @@ body {
 /* === Search Section === */
 .search-section {
   display: flex;
-  flex-wrap: wrap;       /* allow wrapping on small screens */
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;              /* spacing between elements */
+  gap: 8px;
   margin-bottom: 20px;
   width: 100%;
 }
 
 .search-section input {
-  flex: 1;               /* take remaining space */
-  min-width: 180px;      /* prevent too small */
+  flex: 1;
+  min-width: 180px;
   padding: 10px 15px;
   border-radius: 12px;
   border: none;
@@ -179,7 +236,7 @@ body {
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
-  white-space: nowrap;   /* keep emoji + text together */
+  white-space: nowrap;
 }
 
 .search-section button:hover,
@@ -187,14 +244,60 @@ body {
   background: #00c6ff;
 }
 
-/* Current Weather */
-.current-weather h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
+/* === Weather Info Boxes === */
+.weather-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
 }
+
+.weather-box {
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  min-width: 140px;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.weather-box:hover {
+  transform: scale(1.05);
+}
+
+/* City Name */
+.weather-city {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+}
+
+/* Temperature */
+.weather-temp {
+  background: linear-gradient(135deg, #ff512f, #dd2476);
+}
+
+/* Humidity */
+.weather-humidity {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+}
+
+/* Wind Speed */
+.weather-wind {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+
+/* Current Weather (description + AQI) */
+.current-weather {
+  margin-top: 20px;
+}
+
 .current-weather p {
   margin: 5px 0;
   font-weight: 500;
+  font-size: 1rem;
 }
 
 /* Forecast Grid */
@@ -204,6 +307,7 @@ body {
   gap: 10px;
   margin-top: 15px;
 }
+
 .forecast-card {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 10px;
@@ -222,14 +326,12 @@ body {
   margin: 10px auto;
   animation: spin 1s linear infinite;
 }
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* === Animated Weather Backgrounds === */
-
-/* Default Gradient */
 .default-bg {
   background: linear-gradient(to top, #83a4d4, #b6fbff);
 }
@@ -240,6 +342,7 @@ body {
   background-size: 400% 400%;
   animation: sunnyGradient 10s ease infinite;
 }
+
 @keyframes sunnyGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -250,6 +353,7 @@ body {
 .cloudy-bg {
   background: linear-gradient(to top, #bdc3c7, #2c3e50);
 }
+
 .cloudy-bg::before {
   content: "☁️☁️☁️     ☁️☁️☁️    ☁️☁️☁️";
   font-size: 3rem;
@@ -259,6 +363,7 @@ body {
   opacity: 0.6;
   animation: cloudsMove 25s linear infinite;
 }
+
 @keyframes cloudsMove {
   0% { left: -25%; }
   100% { left: 120%; }
@@ -268,6 +373,7 @@ body {
 .rainy-bg {
   background: linear-gradient(to top, #00c6ff, #0072ff);
 }
+
 .rainy-bg::before {
   content: "";
   position: absolute;
@@ -319,4 +425,21 @@ body {
 @keyframes sunGlow {
   from { filter: brightness(1); }
   to { filter: brightness(1.4); }
+}
+
+
+.view-cities-btn {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  font-size: 28px;
+  background: #00ff9d;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
