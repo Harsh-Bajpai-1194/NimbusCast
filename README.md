@@ -1,7 +1,7 @@
 # 🌦 NimbusCast  
 
 Created on 26-08-2025  
-Author - HARSH BAJPAI  
+Author - HARSH BAJPAI [TEAM LEADER]  
 Collaborators👇  
 1️⃣Hani Dwivedi  
 2️⃣Harsh Tripathi  
@@ -112,6 +112,7 @@ The forecast includes a **line chart** showing temperature variations over the n
 ---
 
 ✅ Ready to use! Just plug in your API key and start exploring weather data.
+
 
 
 
