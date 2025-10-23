@@ -112,12 +112,18 @@ def get_aqi_latlon(lat, lon):
 
 # --- Routes ---
 @app.route("/")
-def home():
+def splash():
+    """Serves the new splash screen."""
+    return render_template("splash.html")
+
+@app.route("/app")
+def main_app():
+    """Serves the main weather application (index.html)."""
     return render_template("index.html")
 
-# --- ADDED: Route to serve the login page ---
 @app.route("/login")
 def login():
+    """Serves the login page."""
     return render_template("login.html")
 
 @app.route("/quiz")
@@ -241,4 +247,3 @@ def token_signin():
 # --- Run Server ---
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
-
