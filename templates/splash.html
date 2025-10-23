@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NimbusCast</title>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="{{ url_for('static', filename='images/NimbusCast_icon.jpg') }}" alt="NimbusCast Logo">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if the user is already logged in
+            const userString = localStorage.getItem('user');
+
+            if (userString) {
+                // If logged in, go straight to the app
+                window.location.href = '/app';
+            } else {
+                // If not logged in, wait 3 seconds then go to login
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 3000); // 3-second delay
+            }
+        });
+    </script>
+
+</body>
+
+</html>
