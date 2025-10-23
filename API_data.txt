@@ -1542,4 +1542,3 @@ This is a sample of OpenWeatherMap API data👇
   }
 
 }
-
